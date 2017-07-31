@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Android Trial</string>
+
+    <string name="search">Search</string>
+    <string name="players">Players</string>
+    <string name="teams">Teams</string>
+    <string name="more">More &#8230;</string>
+    <string name="no_result">No results found</string>
+    <string name="search_hint">Team &amp; players search text</string>
+</resources>

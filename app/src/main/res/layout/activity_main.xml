@@ -8,10 +8,13 @@
     android:orientation="vertical"
     tools:context="com.nalcalag.androidtrial.MainActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/screen_layout"
+        android:layout_marginBottom="10dp">
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="40dp"
@@ -33,15 +36,24 @@
             android:text="@string/search"/>
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,25 +70,21 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:background="@drawable/textlines"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/no_players"
-                    android:text="@string/no_result"
-                    android:gravity="center"
-                    android:visibility="gone"/>
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:id="@+id/players_listView"/>
-                <TextView
+                    android:id="@+id/players_recyclerView"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/read_more_players"
                     android:gravity="center"
-                    android:text="@string/more"/>
-                </LinearLayout>
+                    android:text="@string/more"
+                    android:background="@null"
+                    android:backgroundTint="@null" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,28 +102,55 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:background="@drawable/textlines"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/no_teams"
-                    android:text="@string/no_result"
-                    android:gravity="center"
-                    android:visibility="gone"/>
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:id="@+id/teams_listView"/>
-                <TextView
+                    android:id="@+id/teams_recyclerView"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/read_more_teams"
                     android:gravity="center"
-                    android:text="@string/more"/>
+                    android:text="@string/more"
+                    android:background="@null"
+                    android:backgroundTint="@null"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_players"
+        android:text="@string/no_players"
+        android:gravity="center"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_teams"
+        android:text="@string/no_teams"
+        android:gravity="center"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_results"
+        android:text="@string/no_result"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/search_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/search_error"
+        android:textSize="20sp"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

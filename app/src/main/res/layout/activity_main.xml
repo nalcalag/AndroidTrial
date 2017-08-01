@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/screen_layout"
+        android:id="@+id/search_layout"
         android:layout_marginBottom="10dp">
         <ImageView
             android:id="@+id/imageView"
@@ -46,61 +46,45 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/content">
 
             <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:id="@+id/players_recyclerView"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
-
-
-            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:id="@+id/teams_recyclerView"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-        </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/teams_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/players_recyclerView"
+                android:layout_marginTop="10dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/no_results"
+                android:text="@string/no_result"
+                android:gravity="center"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/search_error_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/search_error"
+                android:textSize="20sp"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
     </ScrollView>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/no_players"
-        android:text="@string/no_players"
-        android:gravity="center"
-        android:visibility="gone"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/no_teams"
-        android:text="@string/no_teams"
-        android:gravity="center"
-        android:visibility="gone"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/no_results"
-        android:text="@string/no_result"
-        android:gravity="center"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/search_error_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/search_error"
-        android:textSize="20sp"
-        android:visibility="gone"
-        />
-
 </LinearLayout>

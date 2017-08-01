@@ -28,19 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private String typeSearch = null;
     private String offset = null;
     private String order = null;
-    List<Player> playersList = new ArrayList<>();
-    List<Team> teamsList = new ArrayList<>();
+    List<Player> playersList;
+    List<Team> teamsList;
+    int offsetPlayers;
+    int offsetTeams;
 
     //Views
     private View content;
     private ProgressBar progressBar;
     private EditText searchEditText;
     private Button searchBtn;
-    private RecyclerView rvPlayers;
-    private RecyclerView rvTeams;
+    public RecyclerView rvPlayers;
+    public RecyclerView rvTeams;
     private TextView tvNoResults;
-    private TextView tvNoPlayers;
-    private TextView tvNoTeams;
     private TextView tvError;
 
     //REST
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        //Search button clicked
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,32 +76,40 @@ public class MainActivity extends AppCompatActivity {
         rvPlayers = (RecyclerView) findViewById(R.id.players_recyclerView);
         rvTeams = (RecyclerView) findViewById(R.id.teams_recyclerView);
         tvError = (TextView) findViewById(R.id.search_error_text);
-        tvNoPlayers = (TextView) findViewById(R.id.no_players);
-        tvNoTeams = (TextView) findViewById(R.id.no_teams);
         tvNoResults = (TextView) findViewById(R.id.no_results);
     }
 
     private void getResultInformation (final String userSearch) {
         showLoading();
+        playersList = new ArrayList<>();
+        teamsList = new ArrayList<>();
         callResults = new APIAdapter().getResults(userSearch, typeSearch, offset, order);
         callResults.enqueue(new Callback<DataResult>() {
             @Override
             public void onResponse(Call<DataResult> call, Response<DataResult> response) {
                 //Get players
                 List<Player> players = response.body().getPlayers();
-
-                setRecyclerPlayersList(players);
-                PlayerAdapter playerAdapter = new PlayerAdapter(playersList);
-                rvPlayers.setAdapter(playerAdapter);
+                if (players == null)
+                    rvPlayers.setVisibility(View.GONE);
+                else {
+                    setRecyclerPlayersList(players);
+                    PlayerAdapter playerAdapter = new PlayerAdapter(playersList, getBaseContext(), userSearch, 10);
+                    rvPlayers.setAdapter(playerAdapter);
+                    showResultContent();
+                }
 
                 //Get teams
                 List<Team> teams = response.body().getTeams();
-
-                setRecyclerTeamsList(teams);
-                TeamAdapter teamAdapter = new TeamAdapter(teamsList);
-                rvTeams.setAdapter(teamAdapter);
-
-                showResultContent();
+                if (teams == null) {
+                    rvTeams.setVisibility(View.GONE);
+                    if (players == null)
+                        showNoResults();
+                } else {
+                    setRecyclerTeamsList(teams);
+                    TeamAdapter teamAdapter = new TeamAdapter(teamsList, getBaseContext(), userSearch, 10);
+                    rvTeams.setAdapter(teamAdapter);
+                    showResultContent();
+                }
             }
 
             @Override
@@ -115,9 +124,11 @@ public class MainActivity extends AppCompatActivity {
         header.setHeader(true);
         Player footer = new Player();
         footer.setFooter(true);
-
+        //Add header
         playersList.add(header);
+        //Add content
         playersList.addAll(players);
+        //Add footer
         playersList.add(footer);
     }
 
@@ -126,27 +137,33 @@ public class MainActivity extends AppCompatActivity {
         header.setHeader(true);
         Team footer = new Team();
         footer.setFooter(true);
-
+        //Add header
         teamsList.add(header);
+        //Add content
         teamsList.addAll(teams);
+        //Add footer
         teamsList.add(footer);
     }
 
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
-        content.setVisibility(View.GONE);
         tvNoResults.setVisibility(View.GONE);
     }
 
     private void showError() {
         progressBar.setVisibility(View.GONE);
-        content.setVisibility(View.GONE);
         tvNoResults.setVisibility(View.VISIBLE);
     }
 
     private void showResultContent() {
         progressBar.setVisibility(View.GONE);
-        content.setVisibility(View.VISIBLE);
         tvError.setVisibility(View.GONE);
+        rvPlayers.setVisibility(View.VISIBLE);
+        rvTeams.setVisibility(View.VISIBLE);
+    }
+
+    private void showNoResults() {
+        progressBar.setVisibility(View.GONE);
+        tvNoResults.setVisibility(View.VISIBLE);
     }
 }

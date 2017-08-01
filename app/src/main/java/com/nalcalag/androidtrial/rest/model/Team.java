@@ -27,6 +27,10 @@ public class Team {
     @SerializedName("teamCity")
     private String city;
 
+    private boolean isHeader;
+
+    private boolean isFooter;
+
     //Getters
     public Integer getId() {
         return id;
@@ -50,5 +54,21 @@ public class Team {
 
     public String getCity() {
         return city;
+    }
+
+    public boolean isHeader() {
+        return isHeader;
+    }
+
+    public void setHeader(boolean header) {
+        isHeader = header;
+    }
+
+    public boolean isFooter() {
+        return isFooter;
+    }
+
+    public void setFooter(boolean footer) {
+        isFooter = footer;
     }
 }

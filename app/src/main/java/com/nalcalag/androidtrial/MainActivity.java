@@ -16,6 +16,7 @@ import com.nalcalag.androidtrial.rest.model.Team;
 import com.nalcalag.androidtrial.ui.PlayerAdapter;
 import com.nalcalag.androidtrial.ui.TeamAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,24 +25,19 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String userSearch;
     private String typeSearch = null;
     private String offset = null;
     private String order = null;
-    List<Player> playersList;
-    List<Team> teamsList;
+    List<Player> playersList = new ArrayList<>();
+    List<Team> teamsList = new ArrayList<>();
 
     //Views
     private View content;
     private ProgressBar progressBar;
     private EditText searchEditText;
     private Button searchBtn;
-    private View viewPlayers;
-    private View viewTeams;
     private RecyclerView rvPlayers;
     private RecyclerView rvTeams;
-    private Button playersMoreBtn;
-    private Button teamsMoreBtn;
     private TextView tvNoResults;
     private TextView tvNoPlayers;
     private TextView tvNoTeams;
@@ -49,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     //REST
     private Call<DataResult> callResults;
-    private Call<DataResult> callPlayers;
-    private Call<DataResult> callTeams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +72,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         searchEditText = (EditText) findViewById(R.id.search_et);
         searchBtn = (Button) findViewById(R.id.search_btn);
-        viewPlayers = findViewById(R.id.players_layout);
-        viewTeams = findViewById(R.id.teams_layout);
         rvPlayers = (RecyclerView) findViewById(R.id.players_recyclerView);
         rvTeams = (RecyclerView) findViewById(R.id.teams_recyclerView);
-        playersMoreBtn = (Button) findViewById(R.id.read_more_players);
-        teamsMoreBtn = (Button) findViewById(R.id.read_more_teams);
         tvError = (TextView) findViewById(R.id.search_error_text);
         tvNoPlayers = (TextView) findViewById(R.id.no_players);
         tvNoTeams = (TextView) findViewById(R.id.no_teams);
@@ -97,12 +87,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DataResult> call, Response<DataResult> response) {
                 //Get players
-                playersList = response.body().getPlayers();
+                List<Player> players = response.body().getPlayers();
+
+                setRecyclerPlayersList(players);
                 PlayerAdapter playerAdapter = new PlayerAdapter(playersList);
                 rvPlayers.setAdapter(playerAdapter);
 
                 //Get teams
-                teamsList = response.body().getTeams();
+                List<Team> teams = response.body().getTeams();
+
+                setRecyclerTeamsList(teams);
                 TeamAdapter teamAdapter = new TeamAdapter(teamsList);
                 rvTeams.setAdapter(teamAdapter);
 
@@ -114,6 +108,28 @@ public class MainActivity extends AppCompatActivity {
                 showError();
             }
         });
+    }
+
+    public void setRecyclerPlayersList (List<Player> players) {
+        Player header = new Player();
+        header.setHeader(true);
+        Player footer = new Player();
+        footer.setFooter(true);
+
+        playersList.add(header);
+        playersList.addAll(players);
+        playersList.add(footer);
+    }
+
+    public void setRecyclerTeamsList (List<Team> teams) {
+        Team header = new Team();
+        header.setHeader(true);
+        Team footer = new Team();
+        footer.setFooter(true);
+
+        teamsList.add(header);
+        teamsList.addAll(teams);
+        teamsList.add(footer);
     }
 
     private void showLoading() {

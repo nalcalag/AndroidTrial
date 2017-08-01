@@ -112,4 +112,5 @@ public class Result {
     public void setServerAlert(String serverAlert) {
         this.serverAlert = serverAlert;
     }
+
 }

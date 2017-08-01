@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context="com.nalcalag.androidtrial.MainActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,76 +46,27 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/content">
-
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/players_layout">
-                <TextView
-                    android:id="@+id/players_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/players"
-                    android:textAlignment="center"
-                    android:layout_marginTop="20dp"
-                    android:textAllCaps="true"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/textlines"/>
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/players_recyclerView"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/read_more_players"
-                    android:gravity="center"
-                    android:text="@string/more"
-                    android:background="@null"
-                    android:backgroundTint="@null" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:id="@+id/players_recyclerView"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-            <LinearLayout
+
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/teams_layout">
-                <TextView
-                    android:id="@+id/teams_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/teams"
-                    android:textAlignment="center"
-                    android:layout_marginTop="20dp"
-                    android:textAllCaps="true"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/textlines"/>
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/teams_recyclerView"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/read_more_teams"
-                    android:gravity="center"
-                    android:text="@string/more"
-                    android:background="@null"
-                    android:backgroundTint="@null"/>
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:id="@+id/teams_recyclerView"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
         </LinearLayout>
     </ScrollView>
 

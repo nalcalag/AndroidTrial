@@ -27,6 +27,10 @@ public class Player {
     @SerializedName("playerClub")
     private String club;
 
+    private boolean isHeader;
+
+    private boolean isFooter;
+
     // Getters
     public Integer getId() {
         return id;
@@ -76,5 +80,21 @@ public class Player {
 
     public void setClub(String club) {
         this.club = club;
+    }
+
+    public boolean isHeader() {
+        return isHeader;
+    }
+
+    public void setHeader(boolean header) {
+        isHeader = header;
+    }
+
+    public boolean isFooter() {
+        return isFooter;
+    }
+
+    public void setFooter(boolean footer) {
+        isFooter = footer;
     }
 }

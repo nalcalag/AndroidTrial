@@ -1,6 +1,7 @@
 package com.nalcalag.androidtrial.ui.adaper;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.nalcalag.androidtrial.R;
 import com.nalcalag.androidtrial.rest.adapter.APIAdapter;
 import com.nalcalag.androidtrial.rest.model.DataResult;
 import com.nalcalag.androidtrial.rest.model.Team;
+import com.nalcalag.androidtrial.ui.flag.FlagName;
 
 import java.util.List;
 
@@ -121,6 +123,10 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             holder.tvTeamCity.setText(city);
             String stadium = "Stadium: " + teamsList.get(position).getStadium();
             holder.tvTeamStadium.setText(stadium);
+            //Set Flag
+            String flagName = new FlagName().getFlagFilenameForNationality(teamsList.get(position).getNationality(), context);
+            int resID = context.getResources().getIdentifier(flagName , "drawable", context.getPackageName());
+            holder.teamPic.setImageDrawable(context.getResources().getDrawable(resID));
         }
     }
 

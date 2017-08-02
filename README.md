@@ -1,7 +1,7 @@
 # AndroidTrial
 
 ### Description
-Android app to display results using an server API
+Android app to display results using a server API
 
 ##### Command line Git
 Open your terminal, navigate to your working directory, use `git clone` to get a copy of the repo.

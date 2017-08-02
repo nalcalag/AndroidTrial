@@ -7,9 +7,12 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/item_team_pic"/>
+        android:id="@+id/item_team_pic"
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"/>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
@@ -27,9 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/item_team_stadium"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_color" />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider_color" />
 </LinearLayout>

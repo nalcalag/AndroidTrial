@@ -1,4 +1,4 @@
-package com.nalcalag.androidtrial.ui;
+package com.nalcalag.androidtrial.ui.adaper;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -83,6 +83,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         } else if (isFooter) {
             holder.tvFooter.setText("Load More Teams ...");
 
+            //Set Load More OnClick
             holder.tvFooter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

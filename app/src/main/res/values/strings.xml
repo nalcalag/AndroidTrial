@@ -10,4 +10,6 @@
     <string name="no_result">No results found</string>
     <string name="search_hint">Team &amp; players search text</string>
     <string name="search_error">Something went wrong</string>
+    <string name="search_players">Players search text</string>
+    <string name="fav_players">Players  Saved</string>
 </resources>

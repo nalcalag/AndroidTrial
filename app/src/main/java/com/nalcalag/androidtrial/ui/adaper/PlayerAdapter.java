@@ -1,21 +1,26 @@
-package com.nalcalag.androidtrial.ui;
+package com.nalcalag.androidtrial.ui.adaper;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nalcalag.androidtrial.MainActivity;
 import com.nalcalag.androidtrial.R;
+import com.nalcalag.androidtrial.realm.model.PlayerRealm;
 import com.nalcalag.androidtrial.rest.adapter.APIAdapter;
 import com.nalcalag.androidtrial.rest.model.DataResultPlayers;
 import com.nalcalag.androidtrial.rest.model.Player;
 
 import java.util.List;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +32,7 @@ import retrofit2.Response;
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder> {
 
     private List<Player> playerList;
-    private Context context;
+    private Activity activity;
     private String search;
     private int offset;
     private static String TYPE_SEARCH = "players";
@@ -41,9 +46,9 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
     boolean isFooter = false;
     boolean isHeader = false;
 
-    public PlayerAdapter(List<Player> playerList, Context context, String search, int offset) {
+    public PlayerAdapter(List<Player> playerList, Activity activity, String search, int offset) {
         this.playerList = playerList;
-        this.context = context;
+        this.activity = activity;
         this.search = search;
         this.offset = offset;
     }
@@ -81,6 +86,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
 
         if (isHeader) {
             holder.tvTitle.setText("Players");
+
         } else if (isFooter) {
             holder.tvFooter.setText("Load More Players ...");
             //Set OnClick for Load More..
@@ -116,11 +122,42 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                     });
                 }
             });
+
         } else {
             holder.tvPlayerName.setText(playerList.get(position).getFirstName() + " " + playerList.get(position).getSecondName());
             holder.tvPlayerAge.setText("Age: " + playerList.get(position).getAge().toString());
             holder.tvPlayerClub.setText("Club: " + playerList.get(position).getClub());
-            //Set OnClick item position
+
+            //Add PlayerRealm to RealmDB
+            holder.addImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)activity).realm.executeTransactionAsync(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            PlayerRealm player = realm.createObject(PlayerRealm.class);
+                            player.setId(playerList.get(position).getId());
+                            player.setFirstName(playerList.get(position).getFirstName());
+                            player.setSecondName(playerList.get(position).getSecondName());
+                            player.setNationality(playerList.get(position).getNationality());
+                            player.setAge(playerList.get(position).getAge());
+                            player.setClub(playerList.get(position).getClub());
+                        }
+                    }, new Realm.Transaction.OnSuccess() {
+                        @Override
+                        public void onSuccess() {
+                            Log.v("Success", "--------->OK<---------");
+                            Toast.makeText(activity, "Player saved", Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Realm.Transaction.OnError() {
+                        @Override
+                        public void onError(Throwable error) {
+                            Log.e("Failed", error.getMessage());
+                            Toast.makeText(activity, "Sorry, player not saved", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -151,6 +188,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
         TextView tvPlayerClub;
         TextView tvTitle;
         TextView tvFooter;
+        ImageView addImage;
         ProgressBar progressBar;
 
         ViewHolder(View view) {
@@ -162,6 +200,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             tvTitle = (TextView) view.findViewById(R.id.tv_header);
             tvFooter = (TextView) view.findViewById(R.id.tv_footer);
             progressBar = (ProgressBar) view.findViewById(R.id.progress_bar_load);
+            addImage = (ImageView) view.findViewById(R.id.add_player);
         }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.nalcalag.androidtrial.R;
 import com.nalcalag.androidtrial.rest.adapter.APIAdapter;
-import com.nalcalag.androidtrial.rest.model.DataResultTeams;
+import com.nalcalag.androidtrial.rest.model.DataResult;
 import com.nalcalag.androidtrial.rest.model.Team;
 
 import java.util.List;
@@ -34,12 +34,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     private String order = null;
 
     private class VIEWS_TYPES {
-        public static final int Header=1;
-        public static final int Normal=2;
-        public static final int Footer=3;
+        private static final int Header=1;
+        private static final int Normal=2;
+        private static final int Footer=3;
     }
-    boolean isFooter = false;
-    boolean isHeader = false;
+    private boolean isFooter = false;
+    private boolean isHeader = false;
 
     public TeamAdapter(List<Team> teamsList, Context context, String search, int offset) {
         this.teamsList = teamsList;
@@ -79,19 +79,19 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     public void onBindViewHolder(final TeamAdapter.ViewHolder holder,final int position) {
 
         if (isHeader) {
-            holder.tvTitle.setText("Teams");
+            holder.tvTitle.setText(R.string.teams);
         } else if (isFooter) {
-            holder.tvFooter.setText("Load More Teams ...");
+            holder.tvFooter.setText(R.string.more_teams);
 
             //Set Load More OnClick
             holder.tvFooter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.progressBar.setVisibility(View.VISIBLE);
-                    Call<DataResultTeams> callResults = new APIAdapter().getTeams(search,TYPE_SEARCH,offset,order);
-                    callResults.enqueue(new Callback<DataResultTeams>() {
+                    Call<DataResult> callResults = new APIAdapter().getResults(search,TYPE_SEARCH,offset,order);
+                    callResults.enqueue(new Callback<DataResult>() {
                         @Override
-                        public void onResponse(Call<DataResultTeams> call, Response<DataResultTeams> response) {
+                        public void onResponse(Call<DataResult> call, Response<DataResult> response) {
                             List<Team> newTeams = response.body().getTeams();
                             if (newTeams == null)
                                 holder.tvFooter.setVisibility(View.GONE);
@@ -108,7 +108,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
                             holder.progressBar.setVisibility(View.GONE);
                         }
                         @Override
-                        public void onFailure(Call<DataResultTeams> call, Throwable t) {
+                        public void onFailure(Call<DataResult> call, Throwable t) {
                             holder.tvFooter.setVisibility(View.GONE);
                             holder.progressBar.setVisibility(View.GONE);
                         }
@@ -117,8 +117,10 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             });
         } else {
             holder.tvTeamName.setText(teamsList.get(position).getName());
-            holder.tvTeamCity.setText("City: " + teamsList.get(position).getCity());
-            holder.tvTeamStadium.setText("Stadium: " + teamsList.get(position).getStadium());
+            String city = "City: " + teamsList.get(position).getCity();
+            holder.tvTeamCity.setText(city);
+            String stadium = "Stadium: " + teamsList.get(position).getStadium();
+            holder.tvTeamStadium.setText(stadium);
         }
     }
 

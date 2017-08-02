@@ -35,7 +35,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private String typeSearch = null;
-    private String offset = null;
+    private int offset;
     private String order = null;
     List<Player> playersList;
     List<Team> teamsList;

@@ -15,7 +15,7 @@ import com.nalcalag.androidtrial.MainActivity;
 import com.nalcalag.androidtrial.R;
 import com.nalcalag.androidtrial.realm.model.PlayerRealm;
 import com.nalcalag.androidtrial.rest.adapter.APIAdapter;
-import com.nalcalag.androidtrial.rest.model.DataResultPlayers;
+import com.nalcalag.androidtrial.rest.model.DataResult;
 import com.nalcalag.androidtrial.rest.model.Player;
 
 import java.util.List;
@@ -39,12 +39,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
     private String order = null;
 
     private class VIEWS_TYPES {
-        public static final int Header=1;
-        public static final int Normal=2;
-        public static final int Footer=3;
+        private static final int Header=1;
+        private static final int Normal=2;
+        private static final int Footer=3;
     }
-    boolean isFooter = false;
-    boolean isHeader = false;
+    private boolean isFooter = false;
+    private boolean isHeader = false;
 
     public PlayerAdapter(List<Player> playerList, Activity activity, String search, int offset) {
         this.playerList = playerList;
@@ -85,19 +85,19 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
     public void onBindViewHolder(final PlayerAdapter.ViewHolder holder, final int position) {
 
         if (isHeader) {
-            holder.tvTitle.setText("Players");
+            holder.tvTitle.setText(R.string.players);
 
         } else if (isFooter) {
-            holder.tvFooter.setText("Load More Players ...");
+            holder.tvFooter.setText(R.string.more_players);
             //Set OnClick for Load More..
             holder.tvFooter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     holder.progressBar.setVisibility(View.VISIBLE);
-                    Call<DataResultPlayers> callResults = new APIAdapter().getPlayers(search,TYPE_SEARCH,offset,order);
-                    callResults.enqueue(new Callback<DataResultPlayers>() {
+                    Call<DataResult> callResults = new APIAdapter().getResults(search,TYPE_SEARCH,offset,order);
+                    callResults.enqueue(new Callback<DataResult>() {
                         @Override
-                        public void onResponse(Call<DataResultPlayers> call, Response<DataResultPlayers> response) {
+                        public void onResponse(Call<DataResult> call, Response<DataResult> response) {
                             List<Player> newPlayers = response.body().getPlayers();
                             if (newPlayers == null)
                                 holder.tvFooter.setVisibility(View.GONE);
@@ -115,7 +115,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         }
 
                         @Override
-                        public void onFailure(Call<DataResultPlayers> call, Throwable t) {
+                        public void onFailure(Call<DataResult> call, Throwable t) {
                             holder.tvFooter.setVisibility(View.GONE);
                             holder.progressBar.setVisibility(View.GONE);
                         }
@@ -124,9 +124,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             });
 
         } else {
-            holder.tvPlayerName.setText(playerList.get(position).getFirstName() + " " + playerList.get(position).getSecondName());
-            holder.tvPlayerAge.setText("Age: " + playerList.get(position).getAge().toString());
-            holder.tvPlayerClub.setText("Club: " + playerList.get(position).getClub());
+            String name = playerList.get(position).getFirstName() + " " + playerList.get(position).getSecondName();
+            holder.tvPlayerName.setText(name);
+            String age = "Age: " + playerList.get(position).getAge();
+            holder.tvPlayerAge.setText(age);
+            String club = "Club: " + playerList.get(position).getClub();
+            holder.tvPlayerClub.setText(club);
 
             //Add PlayerRealm to RealmDB
             holder.addImage.setOnClickListener(new View.OnClickListener() {

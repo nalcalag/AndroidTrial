@@ -5,6 +5,8 @@
     <string name="players">Players</string>
     <string name="teams">Teams</string>
     <string name="more">More &#8230;</string>
+    <string name="more_teams">Load More Teams &#8230;</string>
+    <string name="more_players">Load More Players &#8230;</string>
     <string name="no_players">No players found</string>
     <string name="no_teams">No teams found</string>
     <string name="no_result">No results found</string>

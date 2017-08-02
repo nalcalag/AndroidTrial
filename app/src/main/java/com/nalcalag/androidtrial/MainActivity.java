@@ -3,6 +3,8 @@ package com.nalcalag.androidtrial;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.nalcalag.androidtrial.ui.adaper.TeamAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -44,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private View favContent;
     private ProgressBar progressBar;
     private EditText searchEditText;
-    private Button searchBtn;
     private RecyclerView rvPlayers;
     private RecyclerView rvTeams;
     private RecyclerView rvFavPlayers;
@@ -62,13 +65,8 @@ public class MainActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         initViews();
-        //Search button clicked
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getResultInformation(searchEditText.getText().toString());
-            }
-        });
+        setSearchEvent();
+
     }
 
     @Override
@@ -90,12 +88,43 @@ public class MainActivity extends AppCompatActivity {
         favContent = findViewById(R.id.fav_players_content);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         searchEditText = (EditText) findViewById(R.id.search_et);
-        searchBtn = (Button) findViewById(R.id.search_btn);
         rvPlayers = (RecyclerView) findViewById(R.id.players_recyclerView);
         rvTeams = (RecyclerView) findViewById(R.id.teams_recyclerView);
         rvFavPlayers = (RecyclerView) findViewById(R.id.fav_players_recyclerView);
         tvError = (TextView) findViewById(R.id.search_error_text);
         tvNoResults = (TextView) findViewById(R.id.no_results);
+    }
+
+    private void setSearchEvent() {
+        searchEditText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+                    private Timer timer=new Timer();
+                    private final long DELAY = 400; // milliseconds
+
+                    @Override
+                    public void afterTextChanged(final Editable s) {
+                        timer.cancel();
+                        timer = new Timer();
+                        timer.schedule(
+                                new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getResultInformation(searchEditText.getText().toString());
+                                            }
+                                        });
+                                    }
+                                },
+                                DELAY
+                        );
+                    }
+                }
+        );
     }
 
     private void getResultInformation (final String userSearch) {

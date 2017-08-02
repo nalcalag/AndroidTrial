@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nalcalag.androidtrial.MainActivity;
 import com.nalcalag.androidtrial.R;
@@ -36,7 +35,6 @@ import io.realm.RealmResults;
 
 public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<PlayerRealm, MyRecyclerViewAdapter.MyViewHolder> {
 
-    private boolean inDeletionMode = false;
     private Activity activity;
     RealmResults<PlayerRealm> players;
 
@@ -88,7 +86,6 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<PlayerRealm,
 
     @Override
     public long getItemId(int index) {
-        //noinspection ConstantConditions
         return getItem(index).getId();
     }
 

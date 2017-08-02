@@ -147,7 +147,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         @Override
                         public void onSuccess() {
                             Log.v("Success", "--------->OK<---------");
-                            Toast.makeText(activity, "Player saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, playerList.get(position).getFirstName() + " saved", Toast.LENGTH_SHORT).show();
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
